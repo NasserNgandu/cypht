@@ -781,6 +781,7 @@ class Hm_Handler_message_list_type extends Hm_Handler_Module {
         $list_page = 1;
         $list_meta = true;
         $list_path = '';
+        $keyword = '';
         $mailbox_list_title = array();
         $message_list_since = DEFAULT_SINCE;
         $per_source_limit = DEFAULT_PER_SOURCE;
@@ -788,6 +789,10 @@ class Hm_Handler_message_list_type extends Hm_Handler_Module {
 
         if (array_key_exists('list_path', $this->request->get)) {
             $path = $this->request->get['list_path'];
+            if($path == 'sent'){
+                $keyword = $this->request->get['keyword'];
+                $this->out('keyword', $keyword, false);
+            }
             list($list_path, $mailbox_list_title, $message_list_since, $per_source_limit) = get_message_list_settings($path, $this);
         }
         if (array_key_exists('list_parent', $this->request->get)) {

@@ -1668,6 +1668,15 @@ class Hm_Output_message_list_heading extends Hm_Output_Module {
             $refresh_link = '<a class="refresh_link" title="'.$this->trans('Refresh').'" href="#"><img alt="Refresh" class="refresh_list" src="'.Hm_Image_Sources::$refresh.'" width="20" height="20" /></a>';
         }
         elseif (!$this->get('no_list_controls', false)) {
+            $custom_send='';
+            $keyword = $this->get('keyword');
+            if($this->get('list_path')=='sent'){
+                $custom_send = '<form style="float:right" id="imap_filter_form" method="GET">';
+                $custom_send .= '<input type="hidden" name="page" value="message_list" />';
+                $custom_send .= '<input type="hidden" name="list_path" value="'.$this->html_safe($this->get('list_path')).'" />';
+                $custom_send .= '<input style="margin-top:0px" type="search" placeholder="'.$this->trans('Search').
+                '" class="imap_keyword" name="keyword" value="'.$this->html_safe($keyword).'" /></form>';
+            }
             $source_link = '<a href="#" title="'.$this->trans('Sources').'" class="source_link"><img alt="Sources" class="refresh_list" src="'.Hm_Image_Sources::$folder.'" width="20" height="20" /></a>';
             if ($this->get('list_path') == 'combined_inbox') {
                 $path = 'all';
@@ -1696,7 +1705,8 @@ class Hm_Output_message_list_heading extends Hm_Output_Module {
             $res .= combined_sort_dialog($this);
         }
         $res .= list_controls($refresh_link, $config_link, $source_link);
-	    $res .= message_list_meta($this->module_output(), $this);
+        $res .= $custom_send;
+        $res .= message_list_meta($this->module_output(), $this);
         $res .= list_sources($this->get('data_sources', array()), $this);
         $res .= '</div>';
         return $res;
