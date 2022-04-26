@@ -312,3 +312,4 @@ div.unseen, .unseen .subject { font-weight: 700; }
     padding-bottom: 5px;
     background-color: #fff;
 }
+.sent_keyword { width: 120px; font-size: 75%; float: left; margin-top: 8px; }

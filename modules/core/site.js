@@ -731,7 +731,17 @@ function Message_List() {
         }
         $('.core_msg_control').on("click", function() { return self.message_action($(this).data('action')); });
         $('.toggle_link').on("click", function() { return self.toggle_rows(); });
-        $('.refresh_link').on("click", function() { return self.load_sources(); });
+        $('.refresh_link').on("click", function() {
+            if ($('.sent_keyword').val()) {
+                $('#sent_filter_form').submit();
+            }
+            else {
+                return self.load_sources(); 
+            }
+        });
+        $('.sent_keyword').on('search', function() {
+            $('#sent_filter_form').submit();
+        });
     };
 
     this.add_sources = function(sources) {
