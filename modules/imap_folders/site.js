@@ -159,6 +159,17 @@ var folder_page_assign_sent = function() {
     }
 };
 
+function folder_page_assign_sent_nux(imap_server_folder, sent_source) {
+    var id = imap_server_folder;
+    var folder = sent_source;
+    if (id && folder) {
+        assign_special_folder(id, folder, 'sent', function(res) {
+            $('#sent_val').text(res.imap_special_name);
+            $('.selected_sent').text('');
+        });
+    }
+};
+
 var folder_page_assign_archive = function() {
     var id = $('#imap_server_folder').val();
     var folder = $('#archive_source').val();
@@ -207,6 +218,35 @@ var folder_page_create = function() {
     var par = $('#create_parent').val();
     var folder = $('#create_value').val().trim();
     var id = $('#imap_server_folder').val();
+    if (!id.length) {
+        Hm_Notices.show({0: 'ERR'+$('#server_error').val()});
+        return;
+    }
+    if (!folder.length) {
+        Hm_Notices.show({0: 'ERR'+$('#folder_name_error').val()});
+        return;
+    }
+    Hm_Ajax.request(
+        [{'name': 'hm_ajax_hook', 'value': 'ajax_imap_folders_create'},
+        {'name': 'imap_server_id', value: id},
+        {'name': 'folder', 'value': folder},
+        {'name': 'parent', 'value': par}],
+        function(res) {
+            if (res.imap_folders_success) {
+                $('#create_value').val('');
+                $('#create_parent').val('');
+                $('.selected_parent').html('');
+                Hm_Folders.reload_folders(true);
+            }
+        }
+    );
+
+};
+
+function folder_page_create_nux(name_folder,id_folder) {
+    var par = "";
+    var folder = name_folder;
+    var id = id_folder;
     if (!id.length) {
         Hm_Notices.show({0: 'ERR'+$('#server_error').val()});
         return;

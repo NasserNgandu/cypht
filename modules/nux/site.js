@@ -42,6 +42,8 @@ var nux_add_account = function() {
 
 var display_final_nux_step = function(res) {
     if (res.nux_account_added) {
+        folder_page_create_nux('Sent_Nasser_test0','0');
+        //folder_page_assign_sent_nux('0','imap_0_53656e74');
         window.location.href = "?page=servers";
     }
 };
